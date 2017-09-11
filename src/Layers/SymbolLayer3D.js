@@ -1,4 +1,4 @@
-const THREE = require("../three.js");    // Modified version to use 64-bit double precision floats for matrix math
+const THREE = require("../../node_modules/three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 const ThreeboxConstants = require("../constants.js");
 const utils = require("../Utils/Utils.js");
 const ValueGenerator = require("../Utils/ValueGenerator.js");

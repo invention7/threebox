@@ -1,9 +1,10 @@
-var THREE = require("./three.js");    // Modified version to use 64-bit double precision floats for matrix math
+var THREE = require("../node_modules/three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 var ThreeboxConstants = require("./constants.js");
 var CameraSync = require("./Camera/CameraSync.js");
 var utils = require("./Utils/Utils.js");
 //var AnimationManager = require("./Animation/AnimationManager.js");
 var SymbolLayer3D = require("./Layers/SymbolLayer3D.js");
+var SpriteLayer = require("./Layers/SpriteLayer.js");
 
 function Threebox(map){
     this.map = map;
@@ -41,6 +42,7 @@ function Threebox(map){
 
 Threebox.prototype = {
     SymbolLayer3D: SymbolLayer3D,
+    SpriteLayer: SpriteLayer,
 
     update: function(timestamp) {
         // Update any animations
@@ -173,6 +175,13 @@ Threebox.prototype = {
             TODO: write this
         */
 
+    },
+
+    addSpriteLayer: function(options) {
+        const layer = new SpriteLayer(this, options);
+        this.layers.push(layer);
+
+        return layer;
     },
 
     addSymbolLayer: function(options) {

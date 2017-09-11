@@ -4,7 +4,7 @@
  * @author angelxuanchang
  */
 
-const THREE = require('../three.js');
+const THREE = require('../../node_modules/three/build/three.js');
 
 const MTLLoader = function ( manager ) {
 

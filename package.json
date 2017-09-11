@@ -22,5 +22,8 @@
     "build": "browserify exports.js > dist/threebox.js",
     "dev": "watchify exports.js --verbose -o dist/threebox.js",
     "test": "browserify tests/threebox-tests.js > tests/threebox-tests-bundle.js; echo 'Open tests/threebox-tests.html to run tests in the browser.'"
+  },
+  "dependencies": {
+    "three": "^0.87.1"
   }
 }
