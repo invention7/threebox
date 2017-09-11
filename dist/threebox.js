@@ -1,9 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 window.Threebox = require('./src/Threebox'),
-window.THREE = require('./src/three64.js')
+window.THREE = require('./src/three.js')
 
-},{"./src/Threebox":6,"./src/three64.js":10}],2:[function(require,module,exports){
-var THREE = require("../three64.js");
+},{"./src/Threebox":6,"./src/three.js":10}],2:[function(require,module,exports){
+var THREE = require("../three.js");
 var Threebox = require('../Threebox.js');
 var utils = require("../Utils/Utils.js");
 var ThreeboxConstants = require("../constants.js");
@@ -89,8 +89,8 @@ CameraSync.prototype = {
 }
 
 module.exports = exports = CameraSync;
-},{"../Threebox.js":6,"../Utils/Utils.js":7,"../constants.js":9,"../three64.js":10}],3:[function(require,module,exports){
-const THREE = require("../three64.js");    // Modified version to use 64-bit double precision floats for matrix math
+},{"../Threebox.js":6,"../Utils/Utils.js":7,"../constants.js":9,"../three.js":10}],3:[function(require,module,exports){
+const THREE = require("../three.js");    // Modified version to use 64-bit double precision floats for matrix math
 const ThreeboxConstants = require("../constants.js");
 const utils = require("../Utils/Utils.js");
 const ValueGenerator = require("../Utils/ValueGenerator.js");
@@ -305,14 +305,14 @@ SymbolLayer3D.prototype = {
 }
 
 module.exports = exports = SymbolLayer3D;
-},{"../Loaders/MTLLoader.js":4,"../Loaders/OBJLoader.js":5,"../Utils/Utils.js":7,"../Utils/ValueGenerator.js":8,"../constants.js":9,"../three64.js":10}],4:[function(require,module,exports){
+},{"../Loaders/MTLLoader.js":4,"../Loaders/OBJLoader.js":5,"../Utils/Utils.js":7,"../Utils/ValueGenerator.js":8,"../constants.js":9,"../three.js":10}],4:[function(require,module,exports){
 /**
  * Loads a Wavefront .mtl file specifying materials
  *
  * @author angelxuanchang
  */
 
-const THREE = require('../three64.js');
+const THREE = require('../three.js');
 
 const MTLLoader = function ( manager ) {
 
@@ -849,11 +849,11 @@ MTLLoader.MaterialCreator.prototype = {
 };
 
 module.exports = exports = MTLLoader;
-},{"../three64.js":10}],5:[function(require,module,exports){
+},{"../three.js":10}],5:[function(require,module,exports){
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-const THREE = require('../three64.js');
+const THREE = require('../three.js');
 
 const OBJLoader = function ( manager ) {
 
@@ -1597,8 +1597,8 @@ OBJLoader.prototype = {
 };
 
 module.exports = exports = OBJLoader;
-},{"../three64.js":10}],6:[function(require,module,exports){
-var THREE = require("./three64.js");    // Modified version to use 64-bit double precision floats for matrix math
+},{"../three.js":10}],6:[function(require,module,exports){
+var THREE = require("./three.js");    // Modified version to use 64-bit double precision floats for matrix math
 var ThreeboxConstants = require("./constants.js");
 var CameraSync = require("./Camera/CameraSync.js");
 var utils = require("./Utils/Utils.js");
@@ -1829,8 +1829,8 @@ Threebox.prototype = {
 module.exports = exports = Threebox;
 
 
-},{"./Camera/CameraSync.js":2,"./Layers/SymbolLayer3D.js":3,"./Utils/Utils.js":7,"./constants.js":9,"./three64.js":10}],7:[function(require,module,exports){
-var THREE = require("../three64.js");    // Modified version to use 64-bit double precision floats for matrix math
+},{"./Camera/CameraSync.js":2,"./Layers/SymbolLayer3D.js":3,"./Utils/Utils.js":7,"./constants.js":9,"./three.js":10}],7:[function(require,module,exports){
+var THREE = require("../three.js");    // Modified version to use 64-bit double precision floats for matrix math
 
 function prettyPrintMatrix(uglymatrix){
     for (var s=0;s<4;s++){
@@ -1886,7 +1886,7 @@ module.exports.prettyPrintMatrix = prettyPrintMatrix;
 module.exports.makePerspectiveMatrix = makePerspectiveMatrix;
 module.exports.radify = radify;
 module.exports.degreeify = degreeify;
-},{"../three64.js":10}],8:[function(require,module,exports){
+},{"../three.js":10}],8:[function(require,module,exports){
 const ValueGenerator = function(input) {
     if(typeof input === 'object' && input.property !== undefined)    // Value name comes from a property in each item
         return (f => f.properties[input.property]);

@@ -1,4 +1,4 @@
-var THREE = require("./three64.js");    // Modified version to use 64-bit double precision floats for matrix math
+var THREE = require("./three.js");    // Modified version to use 64-bit double precision floats for matrix math
 var ThreeboxConstants = require("./constants.js");
 var CameraSync = require("./Camera/CameraSync.js");
 var utils = require("./Utils/Utils.js");
