@@ -15,7 +15,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "tap-prettify": "0.0.2",
-    "tape": "^4.6.3",
+    "tape": "^4.8",
     "watchify": "^3.9.0"
   },
   "scripts": {

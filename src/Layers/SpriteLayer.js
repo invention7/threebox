@@ -103,4 +103,4 @@ SpriteLayer.prototype = {
     }
 }
 
-module.exports = exports = SymbolLayer3D;
+module.exports = exports = SpriteLayer;

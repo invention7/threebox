@@ -44436,7 +44436,7 @@ SpriteLayer.prototype = {
     }
 }
 
-module.exports = exports = SymbolLayer3D;
+module.exports = exports = SpriteLayer;
 },{"../../node_modules/three/build/three.js":2,"../Utils/Utils.js":9,"../Utils/ValueGenerator.js":10,"../constants.js":11}],5:[function(require,module,exports){
 const THREE = require("../../node_modules/three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 const ThreeboxConstants = require("../constants.js");
