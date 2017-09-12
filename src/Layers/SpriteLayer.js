@@ -97,9 +97,7 @@ SpriteLayer.prototype = {
                     const imgName = this.imgNameGen(f,i);
                     this.features[key] = {
                         geojson: f,
-                        properties:{
-                            spriteimg: imgDirectory + imgName
-                        }
+                        spriteimg: imgDirectory + imgName                      
                     }
         
  //                  imgNames.push({directory: imgDirectory, name: imgName});
@@ -168,7 +166,7 @@ SpriteLayer.prototype = {
             const f = features[key];
             const position = f.geojson.geometry.coordinates;
             const scale = this.scaleGen(f.geojson);
-            const spriteimg = f.properties.spriteimg;
+            const spriteimg = f.spriteimg;
  //           const rotation = this.rotationGen(f.geojson);
 
             var spriteMap = new THREE.TextureLoader().load( spriteimg );
