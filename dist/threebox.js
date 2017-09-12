@@ -46125,6 +46125,7 @@ Threebox.prototype = {
     },
 
     addSpriteLayer: function(options) {
+		console.log("#### Entered addSpriteLayer with options = " + options);
         const layer = new SpriteLayer(this, options);
         this.layers.push(layer);
 
