@@ -1,3 +1,8 @@
+
+# `WARNING` 
+
+Oi!  This is an experimental fork of the bonafide threebox project.  This things is buggy, broken, and SHOULD NOT BE USED! :)
+
 # `threebox`
 
 A three.js plugin for Mapbox GL JS, with support for basic animation and advanced 3D rendering.
