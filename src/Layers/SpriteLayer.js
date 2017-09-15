@@ -103,62 +103,7 @@ SpriteLayer.prototype = {
  //                  imgNames.push({directory: imgDirectory, name: imgName});
                 });
                 this._addOrUpdateFeatures(this.features);
- /*       
-                // Filter out only unique imgs
-                imgNames.forEach(m => this.images[(m.directory + m.name)] = { directory: m.directory, name: m.name, loaded: false });
-        
-                // And load models asynchronously
-                var remaining = Object.keys(this.images).length;
-                console.log("Loading " + remaining + " images", this.images);
-                const imgComplete = (m) => {
-                    console.log("Image complete!", m);
-                    //if(this.images[m].loaded) 
-                    if(--remaining === 0) {
-                        this.loaded = true;
-                        this._addOrUpdateFeatures(this.features);
-                    }
-                }
- */       
- /*               for (m in this.images) {
-                    // TODO: Support formats other than OBJ/MTL
-                    const objLoader = new OBJLoader();
-                    const materialLoader = new MTLLoader();
-        
-                    var loadObject = ((modelName) => { return (materials) => {
-                        // Closure madness!
-                        if(materials) {
-                            materials.preload();
-        
-                            for(material in (materials.materials)) {
-                                materials.materials[material].shininess /= 50;  // Shininess exported by Blender is way too high
-                            }
-                            
-                            objLoader.setMaterials( materials );
-                        }
-                        objLoader.setPath(this.images[modelName].directory);
-                        
-                        console.log("Loading model ", modelName);
-        
-                        objLoader.load(this.images[modelName].name + ".obj", obj => {
-                            this.images[modelName].obj = obj;
-                            this.images[modelName].isMesh = obj.isMesh;
-                            this.images[modelName].loaded = true;
-        
-                            modelComplete(modelName);
-                        }, () => (null), error => {
-                            console.error("Could not load SymbolLayer3D model file.");    
-                        } );
-        
-                    }})(m);
-        
-                    materialLoader.setPath(this.images[m].directory);
-                    materialLoader.load(this.images[m].name + ".mtl", loadObject, () => (null), error => {
-                        console.warn("No material file found for SymbolLayer3D model " + m);
-                        loadObject();
-                    });
-                }
-*/
-  //          },
+ 
     },
     _addOrUpdateFeatures: function(features) {
         console.log("Entered spriteLayer._addOrUpdateFeatures with features = " + JSON.stringify(features) );
