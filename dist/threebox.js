@@ -44338,9 +44338,11 @@ const ValueGenerator = require("../Utils/ValueGenerator.js");
 console.log(THREE);
 
 function SpriteLayer(parent, options) {
+    console.log("Entered SpriteLayer() with parent = " + parent + ", and options = " + options);
     if(options === undefined) return console.error("Invalid options provided to SpriteLayer");
     // TODO: Better error handling here
 
+    if(options.texture === undefined) return console.error("texture must be provided to SpriteLayer");
     if(options.scale === undefined) options.scale = 1.0;
     if(options.scaleWithMapProjection === undefined) options.scaleWithMapProjection = true;
     if(options.key === undefined || options.key === '' || (typeof options.key === 'object' && options.key.property === undefined && options.key.generator === undefined)) {
@@ -44357,19 +44359,21 @@ function SpriteLayer(parent, options) {
     else
         this.source = options.source;
 
+    this.texture = options.texture;
     this.scaleGen = ValueGenerator(options.scale);
     this.features = Object.create(null);
     this.scaleWithMapProjection = options.scaleWithMapProjection;
 
-    this.loaded = false;
+ //   this.loaded = false;
+    this._initialize();
 }
 
 SpriteLayer.prototype = {
     updateSourceData: function(source, absolute) {
-        var oldFeatures = {}
+//        var oldFeatures = {}
 
         if (!source.features) return console.error("updateSourceData expects a GeoJSON FeatureCollection with a 'features' property");
-        source.features.forEach((feature, i) => {
+/*       source.features.forEach((feature, i) => {
             const key = this.keyGen(feature,i); // TODO: error handling
             if (key in this.features) {
                 // Update
@@ -44379,14 +44383,16 @@ SpriteLayer.prototype = {
             else {
                 // Create
                 this.features[key] = {
-                    geojson: feature,
-                    spriteimg: imgDirectory + imgName
-                }
+                    geojson: feature
+                };
+                this.features[key].properties = {
+                };
             }
         });
-
-        this._addOrUpdateFeatures(this.features)
-
+*/
+        this.source = source;
+        this._addOrUpdateFeatures(this.source.features, this.texture);
+/*
         if(absolute) {
             // Check for any features that are not have not been updated and remove them from the scene
             for(key in this.features) {
@@ -44395,8 +44401,8 @@ SpriteLayer.prototype = {
                 }
             }
         }
-
-        this.source = source;
+*/
+ //       this.source = source;
 
     },
     removeFeature: function(key) {
@@ -44404,27 +44410,26 @@ SpriteLayer.prototype = {
         delete this.features[key];
     },
     _initialize: function() {
-
-        // Add features to a map
-        this.source.features.forEach((f,i) => {
-            const key = this.keyGen(f,i); // TODO: error handling
-            if(this.features[key] !== undefined) console.warn("Features with duplicate key: " + key);
-        });
+ //       var spriteNames = [];
+        
+                // Add features to a map
+                this._addOrUpdateFeatures(this.source.features, this.texture);
+ 
     },
-    _addOrUpdateFeatures: function(features) {
+    _addOrUpdateFeatures: function(features, _texture) {
+        console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(features) );
         for (key in features) {
             const f = features[key];
-            const position = f.geojson.geometry.coordinates;
-            const scale = this.scaleGen(f.geojson);
-            const _img = f.spriteimg;
-            const rotation = this.rotationGen(f.geojson);
+            console.log("f = " + JSON.stringify(f));
+            const position = f.geometry.coordinates;
+            const scale = 100;
 
-            var spriteMap = new THREE.TextureLoader().load( _img );
-            var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
+            var spriteMaterial = new THREE.SpriteMaterial( { map: _texture, color: 0xffffff } );
             var sprite = new THREE.Sprite( spriteMaterial );
 
             if (!f.rawObject) {
                 // Need to create a scene graph object and add it to the scene
+                console.log("adding Sprite, sprite = " + sprite + ", position = " + position + ", scale = " + scale );
                 this.parent.addAtCoordinate(sprite, position, {scaleToLatitude: this.scaleWithMapProjection, preScale: scale});
                 //this.features[key] = f;
             }
@@ -45951,7 +45956,7 @@ var CameraSync = require("./Camera/CameraSync.js");
 var utils = require("./Utils/Utils.js");
 //var AnimationManager = require("./Animation/AnimationManager.js");
 var SymbolLayer3D = require("./Layers/SymbolLayer3D.js");
-var SpriteLayer = require("./Layers/SpriteLayer.js");
+var SpriteLayer = require("./Layers/SpriteLayer2.js");
 
 function Threebox(map){
     this.map = map;
@@ -46125,7 +46130,6 @@ Threebox.prototype = {
     },
 
     addSpriteLayer: function(options) {
-		console.log("#### Entered addSpriteLayer with options = " + options);
         const layer = new SpriteLayer(this, options);
         this.layers.push(layer);
 
@@ -46186,7 +46190,7 @@ Threebox.prototype = {
 module.exports = exports = Threebox;
 
 
-},{"../node_modules/three/build/three.js":2,"./Camera/CameraSync.js":3,"./Layers/SpriteLayer.js":4,"./Layers/SymbolLayer3D.js":5,"./Utils/Utils.js":9,"./constants.js":11}],9:[function(require,module,exports){
+},{"../node_modules/three/build/three.js":2,"./Camera/CameraSync.js":3,"./Layers/SpriteLayer2.js":4,"./Layers/SymbolLayer3D.js":5,"./Utils/Utils.js":9,"./constants.js":11}],9:[function(require,module,exports){
 var THREE = require("../../node_modules/three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 
 function prettyPrintMatrix(uglymatrix){
