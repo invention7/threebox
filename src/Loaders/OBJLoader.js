@@ -1,7 +1,7 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-const THREE = require('../../node_modules/three/build/three.js');
+const THREE = require('three/build/three.js');
 
 const OBJLoader = function ( manager ) {
 

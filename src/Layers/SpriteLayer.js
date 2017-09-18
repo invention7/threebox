@@ -1,4 +1,4 @@
-const THREE = require("../../node_modules/three/build/three.js");
+const THREE = require("three/build/three.js");
 const ThreeboxConstants = require("../constants.js");
 const utils = require("../Utils/Utils.js");
 const ValueGenerator = require("../Utils/ValueGenerator.js");
