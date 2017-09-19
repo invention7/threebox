@@ -6,7 +6,7 @@ const ValueGenerator = require("../Utils/ValueGenerator.js");
 console.log(THREE);
 
 function SpriteLayer(parent, options) {
-    console.log("Entered SpriteLayer() with parent = " + parent + ", and options = " + options);
+//    console.log("Entered SpriteLayer() with parent = " + parent + ", and options = " + options);
     if(options === undefined) return console.error("Invalid options provided to SpriteLayer");
     // TODO: Better error handling here
 
@@ -85,10 +85,10 @@ SpriteLayer.prototype = {
  
     },
     _addOrUpdateFeatures: function(feature, _texture) {
-        console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(feature) );
+     //   console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(feature) );
        
             const f = feature;
-            console.log("f = " + JSON.stringify(f));
+      //      console.log("f = " + JSON.stringify(f));
             const position = f.geometry.coordinates;
             const scale = 100;
 
@@ -97,7 +97,7 @@ SpriteLayer.prototype = {
 
             if (!f.rawObject) {
                 // Need to create a scene graph object and add it to the scene
-                console.log("adding Sprite, sprite = " + sprite + ", position = " + position + ", scale = " + scale );
+     //           console.log("adding Sprite, sprite = " + sprite + ", position = " + position + ", scale = " + scale );
                 this.parent.addAtCoordinate(sprite, position, {scaleToLatitude: this.scaleWithMapProjection, preScale: scale});
                 //this.features[key] = f;
             }
