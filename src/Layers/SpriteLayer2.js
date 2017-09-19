@@ -40,7 +40,7 @@ SpriteLayer.prototype = {
     updateSourceData: function(source, absolute) {
 //        var oldFeatures = {}
 
-        if (!source.features) return console.error("updateSourceData expects a GeoJSON FeatureCollection with a 'features' property");
+        if (!source) return console.error("updateSourceData expects a GeoJSON FeatureCollection with a 'feature' property");
 /*       source.features.forEach((feature, i) => {
             const key = this.keyGen(feature,i); // TODO: error handling
             if (key in this.features) {
@@ -59,7 +59,7 @@ SpriteLayer.prototype = {
         });
 */
         this.source = source;
-        this._addOrUpdateFeatures(this.source.features, this.texture);
+        this._addOrUpdateFeatures(this.source, this.texture);
 /*
         if(absolute) {
             // Check for any features that are not have not been updated and remove them from the scene
@@ -81,13 +81,13 @@ SpriteLayer.prototype = {
  //       var spriteNames = [];
         
                 // Add features to a map
-                this._addOrUpdateFeatures(this.source.features, this.texture);
+                this._addOrUpdateFeatures(this.source, this.texture);
  
     },
-    _addOrUpdateFeatures: function(features, _texture) {
-        console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(features) );
-        for (key in features) {
-            const f = features[key];
+    _addOrUpdateFeatures: function(feature, _texture) {
+        console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(feature) );
+       
+            const f = feature;
             console.log("f = " + JSON.stringify(f));
             const position = f.geometry.coordinates;
             const scale = 100;
@@ -104,7 +104,7 @@ SpriteLayer.prototype = {
             else {
                 this.parent.moveToCoordinate(sprite, position, {scaleToLatitude: this.scaleWithMapProjection, preScale: scale});
             }
-        }
+        
     }
 }
 
