@@ -38,7 +38,7 @@ function Threebox(map){
     this.cameraSynchronizer = new CameraSync(this.map, this.camera, this.world);
 
 
-    this.dragControls = new DragControls(this.layers, this.camera, renderer.domElement);
+    this.dragControls = new DragControls(this.layers, this.camera, this.renderer.domElement);
     //this.animationManager = new AnimationManager();
     this.update();
 }
