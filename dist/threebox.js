@@ -1,7 +1,207 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 window.Threebox = require('./src/Threebox')
 
-},{"./src/Threebox":8}],2:[function(require,module,exports){
+},{"./src/Threebox":9}],2:[function(require,module,exports){
+var THREE = require('three');
+
+/*
+ * @author zz85 / https://github.com/zz85
+ * @author mrdoob / http://mrdoob.com
+ * Running this will allow you to drag three.js objects around the screen.
+ */
+
+function DragControls( _objects, _camera, _domElement ) {
+
+	if ( _objects instanceof THREE.Camera ) {
+
+		console.warn( 'THREE.DragControls: Constructor now expects ( objects, camera, domElement )' );
+		var temp = _objects; _objects = _camera; _camera = temp;
+
+	}
+
+	var _plane = new THREE.Plane();
+	var _raycaster = new THREE.Raycaster();
+
+	var _mouse = new THREE.Vector2();
+	var _offset = new THREE.Vector3();
+	var _intersection = new THREE.Vector3();
+
+	var _selected = null, _hovered = null;
+
+	//
+
+	var scope = this;
+
+	function activate() {
+
+		_domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		_domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+		_domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
+
+	}
+
+	function deactivate() {
+
+		_domElement.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+		_domElement.removeEventListener( 'mousedown', onDocumentMouseDown, false );
+		_domElement.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+
+	}
+
+	function dispose() {
+
+		deactivate();
+
+	}
+
+	function onDocumentMouseMove( event ) {
+
+		event.preventDefault();
+
+		var rect = _domElement.getBoundingClientRect();
+
+		_mouse.x = ( (event.clientX - rect.left) / rect.width ) * 2 - 1;
+		_mouse.y = - ( (event.clientY - rect.top) / rect.height ) * 2 + 1;
+
+		_raycaster.setFromCamera( _mouse, _camera );
+
+		if ( _selected && scope.enabled ) {
+
+			if ( _raycaster.ray.intersectPlane( _plane, _intersection ) ) {
+
+				_selected.position.copy( _intersection.sub( _offset ) );
+
+			}
+
+			scope.dispatchEvent( { type: 'drag', object: _selected } );
+
+			return;
+
+		}
+
+		_raycaster.setFromCamera( _mouse, _camera );
+
+		var intersects = _raycaster.intersectObjects( _objects );
+
+		if ( intersects.length > 0 ) {
+
+			var object = intersects[ 0 ].object;
+
+			_plane.setFromNormalAndCoplanarPoint( _camera.getWorldDirection( _plane.normal ), object.position );
+
+			if ( _hovered !== object ) {
+
+				scope.dispatchEvent( { type: 'hoveron', object: object } );
+
+				_domElement.style.cursor = 'pointer';
+				_hovered = object;
+
+			}
+
+		} else {
+
+			if ( _hovered !== null ) {
+
+				scope.dispatchEvent( { type: 'hoveroff', object: _hovered } );
+
+				_domElement.style.cursor = 'auto';
+				_hovered = null;
+
+			}
+
+		}
+
+	}
+
+	function onDocumentMouseDown( event ) {
+
+		event.preventDefault();
+
+		_raycaster.setFromCamera( _mouse, _camera );
+
+		var intersects = _raycaster.intersectObjects( _objects );
+
+		if ( intersects.length > 0 ) {
+
+			_selected = intersects[ 0 ].object;
+
+			if ( _raycaster.ray.intersectPlane( _plane, _intersection ) ) {
+
+				_offset.copy( _intersection ).sub( _selected.position );
+
+			}
+
+			_domElement.style.cursor = 'move';
+
+			scope.dispatchEvent( { type: 'dragstart', object: _selected } );
+
+		}
+
+
+	}
+
+	function onDocumentMouseUp( event ) {
+
+		event.preventDefault();
+
+		if ( _selected ) {
+
+			scope.dispatchEvent( { type: 'dragend', object: _selected } );
+
+			_selected = null;
+
+		}
+
+		_domElement.style.cursor = 'auto';
+
+	}
+
+	activate();
+
+	// API
+
+	this.enabled = true;
+
+	this.activate = activate;
+	this.deactivate = deactivate;
+	this.dispose = dispose;
+
+	// Backward compatibility
+
+	this.setObjects = function () {
+
+		console.error( 'THREE.DragControls: setObjects() has been removed.' );
+
+	};
+
+	this.on = function ( type, listener ) {
+
+		console.warn( 'THREE.DragControls: on() has been deprecated. Use addEventListener() instead.' );
+		scope.addEventListener( type, listener );
+
+	};
+
+	this.off = function ( type, listener ) {
+
+		console.warn( 'THREE.DragControls: off() has been deprecated. Use removeEventListener() instead.' );
+		scope.removeEventListener( type, listener );
+
+	};
+
+	this.notify = function ( type ) {
+
+		console.error( 'THREE.DragControls: notify() has been deprecated. Use dispatchEvent() instead.' );
+		scope.dispatchEvent( { type: type } );
+
+	};
+
+}
+
+DragControls.prototype = Object.create( THREE.EventDispatcher.prototype );
+DragControls.prototype.constructor = DragControls;
+
+module.exports = DragControls;
+},{"three":3}],3:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -44242,7 +44442,7 @@ window.Threebox = require('./src/Threebox')
 
 })));
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var THREE = require("three/build/three.js");
 var Threebox = require('../Threebox.js');
 var utils = require("../Utils/Utils.js");
@@ -44329,7 +44529,7 @@ CameraSync.prototype = {
 }
 
 module.exports = exports = CameraSync;
-},{"../Threebox.js":8,"../Utils/Utils.js":9,"../constants.js":11,"three/build/three.js":2}],4:[function(require,module,exports){
+},{"../Threebox.js":9,"../Utils/Utils.js":10,"../constants.js":12,"three/build/three.js":3}],5:[function(require,module,exports){
 const THREE = require("three/build/three.js");
 const ThreeboxConstants = require("../constants.js");
 const utils = require("../Utils/Utils.js");
@@ -44338,7 +44538,7 @@ const ValueGenerator = require("../Utils/ValueGenerator.js");
 console.log(THREE);
 
 function SpriteLayer(parent, options) {
-    console.log("Entered SpriteLayer() with parent = " + parent + ", and options = " + options);
+//    console.log("Entered SpriteLayer() with parent = " + parent + ", and options = " + options);
     if(options === undefined) return console.error("Invalid options provided to SpriteLayer");
     // TODO: Better error handling here
 
@@ -44372,7 +44572,7 @@ SpriteLayer.prototype = {
     updateSourceData: function(source, absolute) {
 //        var oldFeatures = {}
 
-        if (!source.features) return console.error("updateSourceData expects a GeoJSON FeatureCollection with a 'features' property");
+        if (!source) return console.error("updateSourceData expects a GeoJSON FeatureCollection with a 'feature' property");
 /*       source.features.forEach((feature, i) => {
             const key = this.keyGen(feature,i); // TODO: error handling
             if (key in this.features) {
@@ -44391,7 +44591,7 @@ SpriteLayer.prototype = {
         });
 */
         this.source = source;
-        this._addOrUpdateFeatures(this.source.features, this.texture);
+        this._addOrUpdateFeatures(this.source, this.texture);
 /*
         if(absolute) {
             // Check for any features that are not have not been updated and remove them from the scene
@@ -44413,14 +44613,14 @@ SpriteLayer.prototype = {
  //       var spriteNames = [];
         
                 // Add features to a map
-                this._addOrUpdateFeatures(this.source.features, this.texture);
+                this._addOrUpdateFeatures(this.source, this.texture);
  
     },
-    _addOrUpdateFeatures: function(features, _texture) {
-        console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(features) );
-        for (key in features) {
-            const f = features[key];
-            console.log("f = " + JSON.stringify(f));
+    _addOrUpdateFeatures: function(feature, _texture) {
+     //   console.log("Entered spriteLayer._addOrUpdateFeatures with _texture = " + _texture + " and features = " + JSON.stringify(feature) );
+       
+            const f = feature;
+      //      console.log("f = " + JSON.stringify(f));
             const position = f.geometry.coordinates;
             const scale = 100;
 
@@ -44429,19 +44629,19 @@ SpriteLayer.prototype = {
 
             if (!f.rawObject) {
                 // Need to create a scene graph object and add it to the scene
-                console.log("adding Sprite, sprite = " + sprite + ", position = " + position + ", scale = " + scale );
+     //           console.log("adding Sprite, sprite = " + sprite + ", position = " + position + ", scale = " + scale );
                 this.parent.addAtCoordinate(sprite, position, {scaleToLatitude: this.scaleWithMapProjection, preScale: scale});
                 //this.features[key] = f;
             }
             else {
                 this.parent.moveToCoordinate(sprite, position, {scaleToLatitude: this.scaleWithMapProjection, preScale: scale});
             }
-        }
+        
     }
 }
 
 module.exports = exports = SpriteLayer;
-},{"../Utils/Utils.js":9,"../Utils/ValueGenerator.js":10,"../constants.js":11,"three/build/three.js":2}],5:[function(require,module,exports){
+},{"../Utils/Utils.js":10,"../Utils/ValueGenerator.js":11,"../constants.js":12,"three/build/three.js":3}],6:[function(require,module,exports){
 const THREE = require("three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 const ThreeboxConstants = require("../constants.js");
 const utils = require("../Utils/Utils.js");
@@ -44657,7 +44857,7 @@ SymbolLayer3D.prototype = {
 }
 
 module.exports = exports = SymbolLayer3D;
-},{"../Loaders/MTLLoader.js":6,"../Loaders/OBJLoader.js":7,"../Utils/Utils.js":9,"../Utils/ValueGenerator.js":10,"../constants.js":11,"three/build/three.js":2}],6:[function(require,module,exports){
+},{"../Loaders/MTLLoader.js":7,"../Loaders/OBJLoader.js":8,"../Utils/Utils.js":10,"../Utils/ValueGenerator.js":11,"../constants.js":12,"three/build/three.js":3}],7:[function(require,module,exports){
 /**
  * Loads a Wavefront .mtl file specifying materials
  *
@@ -45201,7 +45401,7 @@ MTLLoader.MaterialCreator.prototype = {
 };
 
 module.exports = exports = MTLLoader;
-},{"three/build/three.js":2}],7:[function(require,module,exports){
+},{"three/build/three.js":3}],8:[function(require,module,exports){
 /**
  * @author mrdoob / http://mrdoob.com/
  */
@@ -45949,7 +46149,7 @@ OBJLoader.prototype = {
 };
 
 module.exports = exports = OBJLoader;
-},{"three/build/three.js":2}],8:[function(require,module,exports){
+},{"three/build/three.js":3}],9:[function(require,module,exports){
 var THREE = require("three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 var ThreeboxConstants = require("./constants.js");
 var CameraSync = require("./Camera/CameraSync.js");
@@ -45957,6 +46157,7 @@ var utils = require("./Utils/Utils.js");
 //var AnimationManager = require("./Animation/AnimationManager.js");
 var SymbolLayer3D = require("./Layers/SymbolLayer3D.js");
 var SpriteLayer = require("./Layers/SpriteLayer2.js");
+const DragControls = require('three-dragcontrols');
 
 function Threebox(map){
     this.map = map;
@@ -45988,6 +46189,8 @@ function Threebox(map){
     this.scene.add(this.world);
     this.cameraSynchronizer = new CameraSync(this.map, this.camera, this.world);
 
+
+    this.dragControls = new DragControls(this.layers, this.camera, renderer.domElement);
     //this.animationManager = new AnimationManager();
     this.update();
 }
@@ -46190,7 +46393,7 @@ Threebox.prototype = {
 module.exports = exports = Threebox;
 
 
-},{"./Camera/CameraSync.js":3,"./Layers/SpriteLayer2.js":4,"./Layers/SymbolLayer3D.js":5,"./Utils/Utils.js":9,"./constants.js":11,"three/build/three.js":2}],9:[function(require,module,exports){
+},{"./Camera/CameraSync.js":4,"./Layers/SpriteLayer2.js":5,"./Layers/SymbolLayer3D.js":6,"./Utils/Utils.js":10,"./constants.js":12,"three-dragcontrols":2,"three/build/three.js":3}],10:[function(require,module,exports){
 var THREE = require("three/build/three.js");    // Modified version to use 64-bit double precision floats for matrix math
 
 function prettyPrintMatrix(uglymatrix){
@@ -46247,7 +46450,7 @@ module.exports.prettyPrintMatrix = prettyPrintMatrix;
 module.exports.makePerspectiveMatrix = makePerspectiveMatrix;
 module.exports.radify = radify;
 module.exports.degreeify = degreeify;
-},{"three/build/three.js":2}],10:[function(require,module,exports){
+},{"three/build/three.js":3}],11:[function(require,module,exports){
 const ValueGenerator = function(input) {
     if(typeof input === 'object' && input.property !== undefined)    // Value name comes from a property in each item
         return (f => f.properties[input.property]);
@@ -46259,7 +46462,7 @@ const ValueGenerator = function(input) {
 }
 
 module.exports = exports = ValueGenerator;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 const WORLD_SIZE = 512;
 const MERCATOR_A = 6378137.0;
 

@@ -5,6 +5,7 @@ var utils = require("./Utils/Utils.js");
 //var AnimationManager = require("./Animation/AnimationManager.js");
 var SymbolLayer3D = require("./Layers/SymbolLayer3D.js");
 var SpriteLayer = require("./Layers/SpriteLayer2.js");
+const DragControls = require('three-dragcontrols');
 
 function Threebox(map){
     this.map = map;
@@ -36,6 +37,8 @@ function Threebox(map){
     this.scene.add(this.world);
     this.cameraSynchronizer = new CameraSync(this.map, this.camera, this.world);
 
+
+    this.dragControls = new DragControls(this.layers, this.camera, renderer.domElement);
     //this.animationManager = new AnimationManager();
     this.update();
 }

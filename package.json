@@ -1,6 +1,6 @@
 {
   "name": "threebox",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A Mapbox GL JS plugin that combines the power of the Three.js 3D library with Mapbox geospatial tools.",
   "main": "main.js",
   "repository": {
@@ -24,6 +24,7 @@
     "test": "browserify tests/threebox-tests.js > tests/threebox-tests-bundle.js; echo 'Open tests/threebox-tests.html to run tests in the browser.'"
   },
   "dependencies": {
-    "three": "^0.87.1"
+    "three": "^0.87.1",
+    "three-dragcontrols": "^0.86.2"
   }
 }
