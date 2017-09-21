@@ -46191,11 +46191,11 @@ function Threebox(map){
 
 
     this.dragControls = new DragControls(this.layers, this.camera, this.renderer.domElement);
-    dragControls.addEventListener( 'dragstart', function ( event ) { 
+    this.dragControls.addEventListener( 'dragstart', function ( event ) { 
         controls.enabled = false;
         console.log("dragstart");
      } );
-    dragControls.addEventListener( 'dragend', function ( event ) { 
+     this.dragControls.addEventListener( 'dragend', function ( event ) { 
         controls.enabled = true;
         console.log("dragend");
      } );
