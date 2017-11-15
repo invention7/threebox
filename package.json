@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "three": "^0.88.0",
-    "three-dragcontrols": "^0.86.2"
+    "three-dragcontrols": "git+https://github.com/invention7/three-dragcontrols.git"
   }
 }
