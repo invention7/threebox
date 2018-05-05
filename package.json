@@ -24,7 +24,6 @@
     "test": "browserify tests/threebox-tests.js > tests/threebox-tests-bundle.js; echo 'Open tests/threebox-tests.html to run tests in the browser.'"
   },
   "dependencies": {
-    "three": "^0.88.0",
-    "three-dragcontrols": "git+https://github.com/invention7/three-dragcontrols.git"
+    "three": "^0.88.0"
   }
 }
